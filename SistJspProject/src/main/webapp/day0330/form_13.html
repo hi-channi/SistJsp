@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+	<h3>폼 태그#2</h3>
+	<form action="action_13.jsp">
+		<table class="table table-bordered" style="width: 500px">
+			<tr>
+				<th width="100" bgcolor="orange">상품명</th>
+				<td><input type="text" name="item" class="form-control"
+					required="required"></td>
+			</tr>
+			<tr>
+				<th width="100" bgcolor="orange">색상</th>
+				<td><input type="checkbox" name="iColor" value="오렌지">오렌지&nbsp;
+					<input type="checkbox" name="iColor" value="블랙">블랙&nbsp;
+					<input type="checkbox" name="iColor" value="핑크">핑크&nbsp;
+					<input type="checkbox" name="iColor" value="그레이">그레이</td>
+			</tr>
+
+			<tr>
+				<th width="100" bgcolor="orange">사이즈</th>
+				<td><input type="radio" name="iSize" value="90">&nbsp;90
+					<input type="radio" name="iSize" value="95">&nbsp;95
+					<input type="radio" name="iSize" value="100">&nbsp;100
+					<input type="radio" name="iSize" value="105">&nbsp;105</td>
+			</tr>
+			<tr>
+				<th width="50" bgcolor="orange">추가상품</th>
+				<td>
+				<select name="additem" class="form-control">
+					<option value="요가매트">요가매트</option>
+					<option value="짐볼">짐볼</option>
+					<option value="밴드">밴드</option>
+					<option value="아령">아령</option>
+				</select>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				<button type="submit" class='btn btn-sm btn-info'>주문전송</button>
+				<input type="reset" class='btn btn-sm btn-danger' value="필드 비우기">
+			</td>
+		</table>
+		
+	</form>
+</body>
+</html>
