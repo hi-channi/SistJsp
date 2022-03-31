@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+table {
+	border: 2px solid gray;
+	border-collapse: collapse;
+	width: 500px;
+}
+
+tr, th, td {
+	border: 1px dotted gray;
+	font-size: 10pt;
+}
+</style>
+</head>
+<body>
+
+	<form action="tableAction_01.jsp">
+		<table>
+			<caption>Radio&Check</caption>
+			<!-- Radio -->
+			<tr height="30">
+				<td><b>최종 학력을 선택하시오.</b> <input type="radio" name="grade"
+					value="고등학교">고등학교&nbsp; <input type="radio" name="grade"
+					value="전문대학">전문대학&nbsp; <input type="radio" name="grade"
+					value="4년대학">4년제 대학&nbsp; <input type="radio" name="grade"
+					value="대학원">대학원&nbsp;</td>
+			</tr>
+			<!-- Checkbox -->
+			<tr>
+				<td><b>가능한 프로그래밍 언어</b> <input type="checkbox" name="skill"
+					value="JAVA">JAVA&nbsp; <input type="checkbox" name="skill"
+					value="C">C&nbsp; <input type="checkbox" name="skill"
+					value="JSP">JSP&nbsp; <input type="checkbox" name="skill"
+					value="Spring">SPRING&nbsp;</td>
+			</tr>
+			<!-- File, Image -->
+			<tr>
+				<td><b>이미지 or 파일선택</b>&nbsp;&nbsp;&nbsp;&nbsp; <input
+					type="file" name="selectF"></td>
+			</tr>
+
+			<!-- Select -->
+			<tr>
+				<td><b>세미프로젝트를 가장 잘할 거 같은 조는?</b>&nbsp;&nbsp; 
+				<select name="bestT">
+						<option value="1조" selected="selected">1조</option>
+						<option value="2조">2조</option>
+						<option value="3조">3조</option>
+						<option value="4조">4조</option>
+				</select></td>
+			</tr>
+
+			<!-- number -->
+			<tr>
+				<td><b>당신의 키는 몇 cm 입니까?</b>&nbsp; <input type="number"
+					name="height" min="150" max="210" value="160" step="2">cm</td>
+			</tr>
+			<tr>
+				<td><b>당신의 몸무게는 몇 kg 입니까?</b>&nbsp; <input type="number"
+					name="weight" min="30" max="150" value="50" step="2">kg</td>
+			</tr>
+
+			<!-- color -->
+			<tr>
+				<td><b>색상 선택</b>&nbsp;&nbsp; <input type="color" name="selectC"></td>
+			</tr>
+
+			<!-- Date -->
+			<tr>
+				<td><b>날짜 선택</b>&nbsp;&nbsp; <input type="date" name="selectD"></td>
+			</tr>
+			
+			<tr>
+			<td align="center">
+			<button type="submit" class="btn btn-sm btn-info">결과 출력</button>
+			<button type="reset" class="btn btn-sm btn-info">필드 초기화</button>
+			</td>
+			</tr>
+		</table>
+
+
+	</form>
+
+</body>
+</html>
