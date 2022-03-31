@@ -1,6 +1,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,java,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,java,macos
 
+
+## sensitive information: ID and password are included.
+DbConnect.java
+
+
 ### Java ###
 # Compiled class file
 *.class
