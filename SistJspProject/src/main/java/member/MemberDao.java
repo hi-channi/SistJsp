@@ -22,7 +22,7 @@ public class MemberDao {
 		
 		try {
 			// 바인딩
-			pstmt=conn.prepareStatement(sql);
+			pstmt=conn.prepareStatement(sql);	// 미완성의 spl문 작성 시 활용
 			
 			pstmt.setString(1, dto.getName());
 			pstmt.setString(2, dto.getHp());
@@ -125,17 +125,23 @@ public class MemberDao {
 	}
 	
 	// 특정 데이터 수정(update)
-	/*
-	public MemberDto updateMember() {
-		MemberDto dto=new MemberDto();
+	public void updateMember(MemberDto dto) {
+		//MemberDto dto=new MemberDto();
 		
 		Connection conn=db.getConnection();
 		PreparedStatement pstmt=null;
 		
-		String sql="";
+		String sql="update member set name=?, hp=? where num=?";
 		
 		try {
 			pstmt=conn.prepareStatement(sql);
+			
+			// 바인딩
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getHp());
+			pstmt.setString(3, dto.getNum());
+			
+			pstmt.execute();
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -145,5 +151,5 @@ public class MemberDao {
 		}
 		
 	}
-	*/
+	
 }
