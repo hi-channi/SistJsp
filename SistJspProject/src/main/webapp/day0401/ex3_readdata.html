@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script type="text/javascript">
+$(function() {
+	//json
+	$("#btn1").click(function() {
+		$.getJSON("multijson.json", function (data) {
+			var print="<h3>Json 데이터 출력</h3>";
+			
+			$.each(data,function(i,item) {	// for문 역할
+				print+=(i+1)+"번째 데이터<br>";
+				print+="Name: "+item.name+"<br>";
+				print+="Hobby: ";
+				if(item.hobby==null) {
+					print+="취미 없음"
+				} else {
+					// 취미는 여러 개일 수 있으므로(=배열) 역시 each로 반복해 출력
+					$.each(item.hobby, function (i,hobbys) {
+						print+="["+hobbys+"]&nbsp;";
+					});
+				}
+				
+				print+="<br>";
+				print+="Age: "+item.age+"<br>";
+				// {시험점수: {과목1: 점수1}, {과목2: 점수2}} >> 삼항연산자로 처리
+				print+="KOR: "+(item.score.kor==null?"정보없음":item.score.kor+"점")+"<br>";
+				print+="ENG: "+(item.score.eng==null?"정보없음":item.score.eng+"점")+"<br>";
+				print+="<hr>";
+			});
+			$("#result").html(print);
+			
+		});
+	});
+	
+	
+	//xml
+	$("#btn2").click(function () {
+		$.get("multixml.xml", function (data) {
+			var msg="<h3>XML 데이터 출력</h3>";
+			
+			$(data).find("data").each(function (i, ele) {
+				var row=$(ele);
+				
+				msg+="아이디: "+row.attr("id") +"<br>";
+				msg+="이름: "+row.attr("name")+"<br>";
+				msg+="제목: "+row.find("subject").text()+"<br>";
+				var imgname=row.find("photo").text();
+				msg+="이미지명: " +imgname+"<br>";
+				msg+="<img src='"+imgname+"' style='max-width: 150px;'>";
+				msg+="<hr>";
+			});
+			$("#result").html(msg);
+			
+		});
+	})
+});
+
+</script>
+
+</head>
+<body>
+
+<button type="button" class="btn btn-success" id="btn1">multijson.json 파일 읽기</button>
+<button type="button" class="btn btn-danger" id="btn2">multixml.xml 파일 읽기</button>
+
+<hr>
+
+<div id="result" class="alert alert-info">Hello</div>
+
+</body>
+</html>

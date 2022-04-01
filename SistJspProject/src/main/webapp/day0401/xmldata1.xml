@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<data>
+	<person no="1">
+		<name>반다운</name>
+		<addr>서울</addr>
+	</person>
+	<person no="2">
+		<name>김성민</name>
+		<addr>경기 안산</addr>
+	</person>
+	<person no="3">
+		<name>최진영</name>
+		<addr>경기 일산</addr>
+	</person>
+	<person no="4">
+		<name>이다영</name>
+		<addr>대전</addr>
+	</person>
+</data>
+

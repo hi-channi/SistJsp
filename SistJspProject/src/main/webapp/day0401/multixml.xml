@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<board>
+	<data id="angel" name="이수연">
+		<subject>안녕 클레오파트라 세상에서 제일 가는 포테이토칩</subject>
+		<photo>../image/11.png</photo>
+	</data>
+	<data id="apple" name="김지연">
+		<subject>바니바니 바니바니 당근 당근  </subject>
+		<photo>../image/12.png</photo>
+	</data>
+	<data id="gold" name="서민준">
+		<subject>민준이가 좋아하는 랜덤 게임</subject>
+		<photo>../image/13.png</photo>
+	</data>
+	<data id="cream" name="오성현">
+		<subject>아이엠 그라운드 자기소개 하기</subject>
+		<photo>../image/14.png</photo>
+	</data>
+	<data id="black" name="지선아">
+		<subject>지하철 지하철 지하철!</subject>
+		<photo>../image/15.png</photo>
+	</data>
+</board>

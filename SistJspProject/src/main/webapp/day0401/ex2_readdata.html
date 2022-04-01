@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style type="text/css">
+#show{
+        font-family: 'Noto Sans KR';
+        margin-top: 30px;
+}
+</style>
+</head>
+<body>
+
+<h2>jQuery의 get()함수를 이용해 XML 데이터 읽기</h2>
+<button type="button" class="btn btn-info" id="btn1">teamtoxml.jsp</button>
+
+<h2>jQuery의 getjson()함수를 이용해 XML 데이터 읽기</h2>
+<button type="button" class="btn btn-danger" id="btn2">infotojson.jsp</button>
+
+
+<div id="show">
+<script type="text/javascript">
+
+$("#btn1").click(function() {
+	$.get("teamtoxml.jsp", function(data) {
+		var s="";
+		$(data).find("team").each(function (i,ele){
+			var n=$(ele);
+			s+="<div class='alert alert-info' style='width: 600px;'>";
+			s+="No. "+n.attr("num")+", "
+			s+="이름: "+n.find("name").text()+", ";
+			s+="운전면허: "+n.find("driver").text()+", ";
+			s+="주소: "+n.find("addr").text()+", ";
+			s+="작성일: "+n.find("writeday").text();
+			s+="</div>"
+		});
+		
+		$("#show").html(s);
+	});
+	
+});
+
+$("#btn2").click(function() {
+	
+	$.getJSON("infotojson.jsp", function (data) {
+		var s="";
+		// 인자로 넘어가는 data는 배열타입
+		$.each(data, function (i,item) {
+			s+="<div class='alert alert-info' style='width: 400px;'>";
+			s+="index. "+i+"<br>";
+			s+="이름: "+item.name+"<br>";
+			s+="연락처: "+item.hp+"<br>";
+			s+="나이:"+item.age+"<br>";
+			s+="사진:<br><img src='"+item.photo+"' width='100'>";
+			s+="</div><br>";
+		});
+		$("#show").html(s);
+	});
+});
+
+</script>
+
+</div>
+</body>
+</html>
