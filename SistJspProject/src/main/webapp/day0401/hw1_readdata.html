@@ -12,15 +12,63 @@ div {
 font-family: 'Noto Sans KR';
 }
 </style>
+<script type="text/javascript">
+$(function () {
+	
+	$("#btn1").click(function () {
+		$.getJSON("studenttojson.jsp", function(data) {
+			var p="";
+			$.each(data, function (i,ele) {
+				p+="<div class='alert alert-info' style='width: 300px;'>";
+				p+="번호: "+(i+1)+"<br>";
+				p+="이름: "+ele.name+"<br>";
+				var imgurl=ele.photo;
+				p+="-사진- <br><img src='"+imgurl+"'>";
+				p+="<ul class='list-group'> 시험점수 ";
+				// 삼항연산자로 처리
+				p+="<li class='list-group-item'>java: "+(ele.score.java=null?"점수없음":ele.score.java+"점")+"</li>";
+				p+="<li class='list-group-item'>spring: "+(ele.score.spring=null?"점수없음":ele.score.spring+"점")+"</li>"
+				p+="</ul></div>";
+			});
+			$("#resultarea").html(p);
+			
+		});
+	});
+	
+	$("#btn2").click(function () {
+		$.get("foodtoxml.jsp", function (data) {
+			var p="";
+			$(data).find("food").each(function (i, elt) {
+				var food=$(elt);
+				p+="<div class='alert alert-warning' style='width: 400px;'>";
+				p+="No. "+food.attr("num")+"<br>";
+				p+="음식 이름: "+food.find("foodname").text()+"<br>";
+				p+="<img src='"+food.find("foodphoto").text()+"' style='max-width: 300px;'><br>";
+				var price=food.find("price").text();
+				// 원 단위에 콤마 삽입
+				price=price.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				p+="가격: "+price+"원<br>";
+				p+="수량: "+food.find("cnt").text();
+				p+="</div><br>";
+			
+			});
+			$("#resultarea").html(p);
+		});
+	});
+
+});
+
+</script>
 </head>
 <body>
 
-<h3>JSON 파일로 작성된 studentjson.json 읽기</h3>
-<button type="button" class="btn btn-info" id="btn1">studentjson.json</button>
+<h3>DB의 student 테이블을 getJSON으로 읽기</h3>
+<button type="button" class="btn btn-info" id="btn1">studenttojson.jsp</button>
 <hr>
 
-<h3>JSON 파일로 작성된 foodjson.json 읽기</h3>
-<button type="button" class="btn btn-danger" id="btn2">foodjson.json</button>
+<h3>DB의 food 테이블을 get으로 읽기</h3>
+<button type="button" class="btn btn-warning" id="btn2">foodtoxml.jsp</button>
+<hr>
 
 <div id="resultarea"></div>
 </body>
