@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style type="text/css">
+table {
+margin-top: 50px;
+margin-left: 50px;
+}
+</style>
+</head>
+<body>
+
+<form action="" id="frm">
+	<table class="table table-bordered" style="width: 400px;">
+	<tr>
+		<th width="100" bgcolor="orange">상품코드</th>
+		<td>
+		<input type="text" name="name" id="name" class="form-control" style="width: 100px;">
+		</td>
+	</tr>
+	<tr>
+		<th width="100" bgcolor="orange">상품명</th>
+		<td>
+		<input type="text" name="item" id="item" class="form-control" style="width: 100px;">
+		</td>
+	</tr>
+	<tr>
+		<th width="100" bgcolor="orange">가격</th>
+		<td>
+		<input type="text" name="price" id="price" class="form-control" style="width: 100px;">
+		</td>
+	</tr>
+	<tr>
+		<th width="100" bgcolor="orange">상품명</th>
+		<td>
+		<input type="radio" name="color" value="yellow">노랑
+		<input type="radio" name="color" value="green">초록
+		<input type="radio" name="color" value="red">빨강
+		<input type="radio" name="color" value="blue">파랑
+		<input type="radio" name="color" value="black">검정
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2" align="center">
+		<button type="button" class="btn btn-success" id="btn" style="width: 200px">데이터 보내기</button>
+		</td>
+	</tr> 
+	</table>
+</form>
+
+<br>
+<div id="show" class="alert alert-info" style="width: 400px; margin-left: 50px;"></div>
+
+<script type="text/javascript">
+$("#btn").click(function () {
+	// 폼 태그의 값을 전부 읽어오기
+	var data=$("#frm").serialize();
+	
+	// alert(data);		// 읽어오는지 확인
+	
+	$.ajax({
+		type:"get",
+		url: "ex5_read.jsp",
+		dataType:"json",
+		data: data,
+		success: function (data) {
+			var s="상품코드: "+data.name+"<br>";
+			s+="상품명: "+data.item+"<br>";
+			s+="가격: "+data.price+"<br>";
+			s+="색상: "+data.color+"<br>";
+		
+			$("#show").html(s);		
+		}
+	});	
+});
+
+</script>
+</body>
+</html>

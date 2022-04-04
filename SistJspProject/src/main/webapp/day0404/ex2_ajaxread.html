@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style type="text/css">
+#show {
+	font-family: 'Noto Sans KR';
+	font-size: 1.3em;
+	margin-top: 30px;
+}
+
+div.box{
+	width: 40px;
+	height: 40px;
+	border: 1px solid black;
+	border-radius: 100px;
+	box-shadow: 5px 5px 5px gray;
+}
+</style>
+</head>
+<body>
+
+<button type="button" class="btn btn-info" id="btn1">shop DB 데이터 읽어오기_json</button>
+<button type="button" class="btn btn-danger" id="btn2">friend DB 데이터 읽어오기_json</button>
+
+<div id="show"></div>
+
+
+<script type="text/javascript">
+$("#btn1").click(function () {
+	$.ajax({
+		type:"get",
+		url:"shoptojson.jsp",
+		dataType:"json",
+		success:function (data) {
+			var s="<table class='table table-default' style='width: 700px;'>";
+			s+="<caption><h4>Json으로 shop 읽기</h4></caption>"
+			s+="<tr bgcolor='tomato'>";
+			s+="<th>번호</th><th>상품명</th><th>색상</th><th>가격</th><th>이미지</th>";
+			s+="</tr>";
+			
+			$.each(data, function(i, element) {
+				s+="<tr align='center'>";
+				s+="<td>"+element.num+"</td>";
+				s+="<td>"+element.item+"</td>";
+				s+="<td>"+element.color+"<br>"
+					+"<div class='box' style='background-color:"
+					+element.color+"';></div></td>";
+				s+="<td>"+element.price+"</td>";
+				s+="<td><img src='"+element.imagename+"' width='40'></td>";
+				s+="</tr>";
+			});
+			s+="</table>";
+			$("#show").html(s);
+		}
+	});
+});
+
+
+$("#btn2").click(function () {
+	$.ajax({
+		type:"get",
+		url:"friendtojson.jsp",
+		dataType:"json",
+		success:function(data) {
+			var s="<table class='table table-default' style='width: 700px;'>";
+			s+="<caption><h4>Json으로 friend 읽기</h4></caption>"
+			s+="<tr bgcolor='orange'>";
+			s+="<th>번호</th><th>이름</th><th>연락처</th><th>주소</th><th>등록일</th>";
+			s+="</tr>";
+			
+			$.each(data, function(i, element) {
+				s+="<tr align='center'>";
+				s+="<td>"+element.num+"</td>";
+				s+="<td>"+element.name+"</td>";
+				s+="<td>"+element.hp+"<br>";
+				s+="<td>"+element.addr+"<br>"
+				s+="<td>"+element.joindate+"</td>";
+				s+="</tr>";
+			});
+			s+="</table>";
+			$("#show").html(s);
+		}
+	});
+});
+	
+</script>
+</body>
+</html>

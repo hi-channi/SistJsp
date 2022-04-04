@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<style type="text/css">
+ul, li{
+	list-style: none;
+}
+
+ul li{
+	float: left;
+	width: 150px;
+	height: 50px;
+	font-family: 'Noto Sans KR';
+	border: 1px solid  tomato;
+	margin: 0 5px;
+	text-align: center;
+	line-height: 50px;
+	cursor: pointer;}
+
+li:hover {
+	background-color: tomato;
+	color:white;
+}
+
+#show {
+	margin-left: 50px;
+}
+
+div.box{
+	width: 40px;
+	height: 40px;
+	border: 1px solid black;
+	border-radius: 100px;
+	box-shadow: 5px 5px 5px gray;
+}
+</style>
+
+<script type="text/javascript">
+$(function name() {
+	
+	// 홈
+    $("li:eq(0)").click(function(){
+		var img="<img src='../image/food1.png' class='img-thumbnail' style='max-width: 300px;'>&nbsp;&nbsp;"
+			img+="<img src='../image/food2.png' class='img-thumbnail' style='max-width: 300px;'>&nbsp;&nbsp;"
+			img+="<img src='../image/food3.png' class='img-thumbnail' style='max-width: 300px;'>&nbsp;&nbsp;"
+            $("#show").html(img);
+    });
+	
+	// friend
+	$("li:eq(1)").click(function () {
+		$.ajax({
+			type:"get",
+			url:"friendtojson.jsp",
+			dataType:"json",
+			success:function(data) {
+				
+				var s="<table class='table table-default' style='width: 700px;'>";
+				s+="<caption><h4>Json으로 friend 읽기</h4></caption>"
+				s+="<tr bgcolor='tomato'>";
+				s+="<th>번호</th><th>이름</th><th>연락처</th><th>주소</th><th>등록일</th>";
+				s+="</tr>";
+				
+				$.each(data, function(i, element) {
+					s+="<tr align='center'>";
+					s+="<td>"+element.num+"</td>";
+					s+="<td>"+element.name+"</td>";
+					s+="<td>"+element.hp+"<br>";
+					s+="<td>"+element.addr+"<br>"
+					s+="<td>"+element.joindate+"</td>";
+					s+="</tr>";
+				});
+				s+="</table>";
+				$("#show").html(s);
+			}
+		});
+	});
+	
+	// food
+	$("li:eq(2)").click(function () {
+		alert("클릭 테스트");
+	});
+	
+	// shop
+	$("li:eq(3)").click(function () {
+		$.ajax({
+			type:"get",
+			url:"shoptojson.jsp",
+			dataType:"json",
+			success:function (data) {
+				
+				var s="<table class='table table-default' style='width: 700px;'>";
+				s+="<caption><h4>Json으로 shop 읽기</h4></caption>"
+				s+="<tr bgcolor='tomato'>";
+				s+="<th>번호</th><th>상품명</th><th>색상</th><th>가격</th><th>이미지</th>";
+				s+="</tr>";
+				
+				$.each(data, function(i, element) {
+					s+="<tr align='center'>";
+					s+="<td>"+element.num+"</td>";
+					s+="<td>"+element.item+"</td>";
+					s+="<td>"+element.color+"<br>"
+						+"<div class='box' style='background-color:"
+						+element.color+"';></div></td>";
+					
+					s+="<td>"+element.price+"</td>";
+					s+="<td><img src='"+element.imagename+"' width='60'></td>";
+					s+="</tr>";
+				});
+				s+="</table>";
+				$("#show").html(s);
+			}
+		});
+	});
+});
+</script>
+
+</head>
+<body>
+
+<ul>
+	<li><span class="glyphicon glyphicon-home"></span></li>
+	<li>friend</li>
+	<li>food</li>
+	<li>shop</li>
+</ul>
+
+<div style="clear: both;"></div>
+<div id="show" style="margin-top: 50px;">show</div>
+</body>
+</html>
