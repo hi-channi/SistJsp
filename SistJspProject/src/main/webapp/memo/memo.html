@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style type="text/css">
+div.memo {
+position: absolute;
+border: 0px solid gray;
+font-family: 'Noto Sans KR';
+font-size: 1.4em;
+}
+
+div.button {
+	line-height: 150px;
+	top: 30px;
+	width: 400px;
+	height: 100px;
+	line-height: 100px;
+	text-align: center;
+}
+
+div.list {
+	left: 700px;
+	top: 100px;
+	width: 600px;
+	height:700px;
+	padding: 20px 20px;
+}
+span.writeday {
+	float: right;
+	color: #bbb;
+	
+}
+
+span.writer {
+	font-weight: bold;
+	
+}
+
+div.addform {
+	left: 100px;
+	top: 150px;
+	width: 500px;
+	height: 400px;
+	padding: 20px 20px;
+	
+}
+
+div.updateform {
+	left: 100px;
+	top: 150px;
+	width: 500px;
+	height: 400px;
+	padding: 20px 20px;
+	
+}
+
+img.avatar {
+	cursor: pointer;
+}
+
+img.select {
+	border: 2px solid tomato;
+}
+
+td.memosave:hover {
+	background-color: #B5B2FF;
+}
+
+td.memoupdate:hover {
+	background-color: #FF9090;
+	}
+	
+span.del, span.mod {
+	cursor: pointer;
+}
+</style>
+<script type="text/javascript">
+$(function () {
+	
+	// 초기화면 >> 메모 추가/수정 폼 보이지 않기
+	$("div.addform").hide();
+	$("div.updateform").hide();
+	
+	// 추가버튼 >> 수정 폼 사라지고 추가 폼 보이기
+	$("#btnadd").click(function () {
+		$("div.updateform").hide();
+		$("div.addform").slideToggle('fast'); 	// ON-OFF
+	});
+	
+	// 수정버튼(TEST) >> 추가 폼 사라지고 수정 폼 보이기
+	/* $("#btnupdate").click(function () {
+		$("div.addform").hide();
+		$("div.updateform").slideToggle('fast'); 	// ON-OFF
+	});
+	*/
+	
+	// Avatar 0번 인덱스에 select 클래스 추가(avatar default)
+	$("img.avatar").eq(0).addClass("select");
+	
+	// Avatar 0번 인덱스의 src값을 input(hidden)태그에 넣어주기
+	$("#avatar").val($("img.avatar").eq(0).attr("src"));
+	
+	// Avatar 선택 시 다른 avatar css속성 값(클래스) 해제, 동시에 클릭한 avatar에 클래스 적용하고 input(hidden)태그에 src값 적용
+	$("img.avatar").click(function name() {
+		$(this).siblings().removeClass("select");
+		$(this).addClass("select");
+		$("#avatar").val($(this).attr("src"));
+	});
+	
+	// 메모 저장
+	$("td.memosave").click(function () {
+		// serialize(): 폼 태그 내부 하위 요소 내용을 모두 보냄(단, 폼 내부의 각 요소에 반드시 name 태그가 필요)
+		var data=$("#addfrm").serialize();
+		
+		//alert(data);		// 출력확인
+		$.ajax({
+			type: "post",
+			url:"memoinsert.jsp",
+			dataType: "html", 	// 반환 값이 없을 경우 html >> 메모 저장은 반환 값이 없는 action
+			data: data,
+			success: function (data) {
+				// 메모 추가 폼에 입력된 값 지우기
+				$("#writer").val("");
+				$("#content").val("");
+				// 선택된 아바타 초기화
+				$("img.avatar").siblings().removeClass("select");
+				$("img.avatar").eq(0).addClass("select");
+				
+				alert("저장 성공");
+				
+				// 메모가 성공적으로 DB에 입력됐을 경우 리스트 다시 불러오기
+				list();
+				
+			}
+		});
+	});
+	
+	// 아래 메소드는 작동하지 않음 >> why?
+	/* $("span.del").onclick(function () {
+		var num=$(this).attr("num");
+		alert("clear");
+	});
+	*/
+	
+	// 삭제 이벤트 >> 동적 이벤트 on (span.del은 지정선택자)
+	$(document).on("click","span.del", function () {
+		var num=$(this).attr("num");
+		alert(num);
+		$.ajax({
+			type:"get",
+			url:"memodelete.jsp",
+			dataType: "html",
+			data: {"num":num},
+			success: function (data) {
+				list();
+			}
+		});
+	});
+	
+	// 수정 이벤트 >> 동적 이벤트 on
+	$(document).on("click", "span.mod", function name() {
+		var num=$(this).attr("num");
+		alert(num);
+		// 수정 버튼을 선택한 메모의 num을 수정폼의 unum으로 가져오기
+		$("#unum").val(num);
+		$.ajax({
+			type:"get",
+			url:"memogetdata.jsp",
+			dataType: "xml",
+			data: {"num":num},
+			success: function (data) {
+				var writer=$(data).find("writer").text();
+				var content=$(data).find("content").text();
+				var avatar=$(data).find("writer").text();
+				
+				// 수정 폼 input에 수정할 메모 데이터 넣기
+				$("#uwriter").val(writer);
+				$("#ucontent").val(content);
+				
+				// 수정할 메모의 Avatar에 select 클래스 추가
+				$("img.uavatar").each(function (i, element){
+					if($(this).attr("src")==avatar) {
+						$(this).addClass("select");
+					} else {
+						$(this).removeClass("select");
+					}
+				});
+				
+				// 수정할 아바타를 선택할 수 있게(아바타가 보이게) 처리
+				$("img.uavatar").click(function name() {
+					$(this).siblings().removeClass("select");
+					$(this).addClass("select");
+					$("#uavatar").val($(this).attr("src"));
+				});
+				
+				// 메모 추가 폼을 숨기고 메모 수정 폼을 나타냄
+				$("div.addform").hide();
+				$("div.updateform").show('fast');
+			
+			}
+		});
+	});
+	
+	// 메모 수정
+	$("td.memoupdate").click(function () {
+		// serialize(): 폼 태그 내부 하위 요소 내용을 모두 보냄(단, 폼 내부의 각 요소에 반드시 name 태그가 필요)
+		var data=$("#updatefrm").serialize();
+		
+		//alert(data);		// 출력확인
+		$.ajax({
+			type: "post",
+			url:"memoupdate.jsp",
+			dataType: "html", 	// 반환 값이 없을 경우 html >> 메모 수정은 반환 값이 없는 action
+			data: data,
+			success: function (data) {
+				$("div.updateform").hide();
+				
+				// 메모가 성공적으로 DB에 수정됐을 경우 리스트 다시 불러오기
+				list();
+				alert("수정 성공");
+				
+			}
+		});
+	});
+	// 처음 로딩 시 목록 출력하기
+	// NAS DB 응답시간이 길어 최하단으로 이동 (로컬 서버 이용 시 상단으로 이동)
+	list();
+	
+});
+// 메모 리스트 출력
+function list() {
+	$.ajax({
+		type: "get",
+		dataType:"json",
+		url: "memolist.jsp",
+		success: function (data) {
+			alert("총 "+data.length+"개의 메모를 불러왔습니다.");
+			
+			var s="";
+			if(data.length==0){
+				s+="<h3 class='alert alert-info'>작성된 메모가 없습니다.</h3>";
+				
+			} else {
+				$.each(data, function (i, element) {
+					s+="<table class='table' width='300'>";
+					s+="<tr height='100'><td>";
+					s+="<span class='writer'>작성자: "+element.writer+"</span>";
+					s+="<span class='writeday'>"+element.writeday+"</span>";
+					s+="<br>";
+					s+="<pre>"+element.content;
+					s+="<img src='"+element.avatar+"' align='right' width='80'>"
+					s+="</pre>";
+					s+="</td></tr>";
+					s+="<span class='glyphicon glyphicon-edit mod' num="+element.num+"></span>";
+					s+="&nbsp;<span class='glyphicon glyphicon-trash del' num="+element.num+"></span>";
+					s+="</table><br>";
+				});
+			};
+			$("div.list").html(s);
+		}
+	});
+};
+
+</script>
+</head>
+<body>
+
+<div class="memo button"> 
+<button type="button" class="btn btn-danger" id="btnadd">메모 추가</button>
+<!-- (TEST) -->
+<!-- <button type="button" class="btn btn-warning" id="btnupdate">메모 수정</button> -->
+</div>
+
+<!-- 입력폼 영역 -->
+<div class="memo addform">
+	<form id="addfrm"> <!-- 한 페이지 내에서 변경이 이루어지기에 post로 지정하지 않아도 됨 -->
+		<table class="table table-bordered">
+			<caption>메모 추가</caption>
+				<tr>
+					<th width="100" bgcolor="#e6e6fa">작성자</th>
+					<td>
+					<input type="text" class="form-control input-sm" name="writer" id="writer" style="width: 120px;">
+					</td>
+				</tr>
+				<tr>
+					<th width="100" bgcolor="#e6e6fa">내용</th>
+					<td>
+					<!-- resize: vertical 적용 시 textarea 상하조절만 가능 -->
+					<textarea class="form-control" name="content" id="content" style="width: 350px; height: 100px; resize: vertical;"></textarea>
+					
+					</td>
+				</tr>
+				
+				<tr>
+					<th width="100" bgcolor="#e6e6fa">아바타</th>
+					<td>
+					<input type="hidden" name="avatar" id="avatar">
+					<script type="text/javascript">
+						var tag="";
+						for (var i = 1; i <= 10; i++) {
+							tag+="<img src='../image/"+i+".png' width='60' class='avatar'>";
+							if(i==5) {
+								tag+="<br>";
+							}
+						}
+						document.write(tag);
+					</script>
+					</td>
+				</tr>
+				
+				<tr>
+				<td colspan="2" align="center" bgcolor="#e6e6fa" style="cursor: pointer;" class="memosave">
+				저장하기
+				</td>
+				</tr>
+			
+		</table>
+	</form>
+</div>
+
+
+<!-- 수정폼 영역 -->
+<!-- num을 반드시 hidden으로 넘겨야함 (Line 266)-->
+<div class="memo updateform">
+	<form id="updatefrm"> <!-- 한 페이지 내에서 변경이 이루어지기에 post로 지정하지 않아도 됨 -->
+		<table class="table table-bordered">
+			<caption>메모 수정</caption>
+				<tr>
+					<th width="100" bgcolor="#FFB4B4">작성자</th>
+					<td>
+					<input type="hidden" class="form-control input-sm" name="unum" id="unum">
+					<input type="text" class="form-control input-sm" name="uwriter" id="uwriter" style="width: 120px;">
+					</td>
+				</tr>
+				<tr>
+					<th width="100" bgcolor="#FFB4B4">내용</th>
+					<td>
+					<!-- resize: vertical 적용 시 textarea 상하조절만 가능 -->
+					<textarea class="form-control" name="ucontent" id="ucontent" style="width: 350px; height: 100px; resize: vertical;"></textarea>
+					
+					</td>
+				</tr>
+				
+				<tr>
+					<th width="100" bgcolor="#FFB4B4">아바타</th>
+					<td>
+					<input type="hidden" name="uavatar" id="uavatar">
+					<script type="text/javascript">
+						var tag="";
+						for (var i = 1; i <= 10; i++) {
+							tag+="<img src='../image/"+i+".png' width='60' class='uavatar'>";
+							if(i==5) {
+								tag+="<br>";
+							}
+						}
+						document.write(tag);
+					</script>
+					</td>
+				</tr>
+				
+				<tr>
+				<td colspan="2" align="center" bgcolor="#FFB4B4" style="cursor: pointer;" class="memoupdate">
+				수정하기
+				</td>
+				</tr>
+			
+		</table>
+	</form>
+</div>
+<div class="memo list">저장된 메모 불러오는 중..<br>로딩이 완료되면 알림창이 표시됩니다. </div>
+</body>
+</html>

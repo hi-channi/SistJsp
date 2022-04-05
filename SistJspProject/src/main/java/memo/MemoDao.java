@@ -57,7 +57,7 @@ public class MemoDao {
 			// rs 얻기
 			rs = pstmt.executeQuery();
 
-			// db데이터를 읽어서 dto에 넣기
+			// DB 데이터를 읽어 dto에 넣기
 			while (rs.next()) {
 				MemoDto dto = new MemoDto();
 				dto.setNum(rs.getString("num"));
@@ -77,5 +77,83 @@ public class MemoDao {
 
 		return list;
 	}
+	
+	// 메모 삭제 메소드
+	public void deleteMemo(String num) {
+		
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql="delete from memo where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, num);
+			pstmt.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
+	}
 
+	// 수정 위한 단일 메모 출력 메소드
+	public MemoDto getData(String num) {
+		
+		MemoDto dto=new MemoDto();
+		
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		ResultSet rs=null;
+		
+		String sql="select * from memo where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, num);
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setNum(rs.getString("num"));
+				dto.setWriter(rs.getString("writer"));
+				dto.setContent(rs.getString("content"));
+				dto.setAvatar(rs.getString("avatar"));
+				dto.setWriteday(rs.getTimestamp("writeday"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+		return dto;
+	}
+	
+	// 메모 수정 메소드
+	public void updateMemo(MemoDto dto) {
+		
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql="update memo set writer=?, content=?, avatar=? where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getWriter());
+			pstmt.setString(2, dto.getContent());
+			pstmt.setString(3, dto.getAvatar());
+			pstmt.setString(4, dto.getNum());
+			
+			pstmt.execute();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
+	}
+	
 }
