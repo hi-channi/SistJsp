@@ -149,7 +149,7 @@ public class MemoDao {
 			
 			pstmt.execute();
 			
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			db.dbClose(pstmt, conn);

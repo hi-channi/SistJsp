@@ -8,7 +8,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<!-- Return 값이 없기에 HTML Template 삭제 -->
+
 <%
 	AjaxboardDao db=new AjaxboardDao();
 	

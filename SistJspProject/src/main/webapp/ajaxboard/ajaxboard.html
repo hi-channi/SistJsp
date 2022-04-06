@@ -8,25 +8,30 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style type="text/css">
 
-div.list {
+div.list, div.detail {
 	position: absolute;
 	left: 100px;
 	top: 100px;
 }
 
-div.writeform {
+div.writeform, div.updateform {
 	position: absolute;
 	left: 900px;
 	top: 100px;
 }
 
-div.list *, div.writeform {
+div.list *, div.writeform *, div.detail * {
 	font-family: 'Noto Sans KR';
 	font-size: 13pt;
 }
 
 span.detail{
 	cursor: pointer;
+}
+
+div.detail button{
+	width: 80px;
+	margin-right: 10px;
 }
 </style>
 
@@ -36,7 +41,8 @@ $(function() {
 	// 게시글 리스트 출력
 	list();
 	
-	// 초기에 입력 폼 숨기기
+	// 초기에 입력 폼, 수정 폼 숨기기
+	$("div.updateform").hide();
 	$("div.writeform").hide();
 	
 	// 글쓰기 버튼 클릭 시 입력폼 출력
@@ -44,13 +50,14 @@ $(function() {
 		$("div.writeform").toggle();
 	});
 	
+	// 게시글 추가
 	$("#btnadd").click(function () {
 		var writer=$("#writer").val();
 		var subject=$("#subject").val();
 		var content=$("#content").val();
 		var pfimg=$("#pfimg").val();
 		
-		alert(writer);
+		console.log(writer,subject,content,pfimg);
 		
 		$.ajax({
 			type: "post",
@@ -72,25 +79,146 @@ $(function() {
 			}
 		});
 	});
+	
+	// 제목 클릭 시 내용보기 (동적 이벤트)
+	$(document).on("click","span.detail",function(){
+		// 입력 폼 숨기기
+		$("div.writeform").hide();
+		// span 태그에 넣은 num을 가져오기
+		var num=$(this).attr("num");
+		//alert(num);
+		
+		$.ajax({
+			type:"get",
+			dataType:"json",
+			data:{"num":num},
+			url:"detailboard.jsp",
+			success:function(data){
+				var s="<table class='table table-bordered' style='width:500px;'>";
+				s+="<caption><b>AJAX 게시판 \></b>"+data.subject+"</caption>";
+				s+="<tr bgcolor='orange'>";
+				s+="<td><b style='font-size:2em;'>"+data.subject+"</b>";
+				s+="<span style='float:right; color:gray;'>"+data.writeday+"</span></td></tr>";
+				s+="<tr><td>";
+				s+="<img src='"+data.pfimg+"' width='50' align='left'>&nbsp;";
+				s+="<br>"+data.writer+"</td></tr>";
+				s+="<tr height='150'><td><pre>"+data.content+"</pre></td></tr>";
+				// 조작 버튼
+				s+="<tr><td align='right' num='"+data.num+"'>";
+				s+="<button type='button' class='btn btn-info btnlist'>목록</button>";
+				s+="<button type='button' class='btn btn-info btnupdate'>수정</button>";
+				s+="<button type='button' class='btn btn-info btndel'>삭제</button>";
+				s+="</td></tr>";
+				s+="</table>";
+				$("div.detail").html(s);
+				
+				// list 숨기기
+				$("div.list").hide();
+				
+				// detail 페이지 출력
+				$("div.detail").show();
+			}
+		});
+	});
+	
+	// 내용 보기 안의 목록버튼
+	$(document).on("click",".btnlist",function(){
+		$("div.detail").hide();
+		$("div.list").show();
+	});
+	
+	
+	// 삭제
+	$(document).on("click",".btndel",function(){
+		// num값 가져오기
+		var num=$(this).parent().attr("num"); // td(부모태그)에서 num 가져옴
+		alert(num);
+		
+		$.ajax({
+			type:"get",
+			dataType:"html",
+			url:"deleteboard.jsp",
+			data:{"num":num},
+			success:function(){
+				// Delete 성공 시 Reload
+				list();
+				
+				// 게시글 내용 div 숨기고 리스트 div 보이기
+				$("div.detail").hide();
+				$("div.list").show();
+			}
+		});
+	});
+	
+	// 수정
+	$(document).on("click",".btnupdate",function(){
+		// 게시글 내용 div 숨기고 리스트 div 보이기
+		$("div.detail").hide();
+		
+		var num=$(this).parent().attr("num");
+		
+		$.ajax({
+			type:"get",
+			dataType:"json",
+			url:"detailboard.jsp",
+			data: {"num":num},
+			success: function (data){
+				$("#unum").val(data.num);
+				$("#uwriter").val(data.writer);
+				$("#usubject").val(data.subject);
+				$("#ucontent").val(data.content);
+				$("#pfimg").val(data.pfimg);
+				
+				$("div.updateform").show();
+			}
+		});
+	});
+	
+	$(document).on("click","#btnupdate",function(){
+		// 게시글 내용 div 숨기고 리스트 div 보이기
+		$("div.updateform").hide();
+		$("div.detail").show();
+		
+		var data=$("#ufrm").serialize();
+		alert(data);
+		$.ajax({
+			type:"post",
+			dataType:"html",
+			url:"updateboard.jsp",
+			data: data,
+			success: function (data){
+				
+				console.log(writer,subject,content,pfimg);
+				$("div.updateform").hide();
+				$("div.detail").hide();
+				$("div.list").show();
+				
+				// 게시글이 성공적으로 DB에 수정됐을 경우 리스트 다시 불러오기
+				alert("수정 성공");
+				list();
+				
+			}
+		});
+	});
+	
 });	
 
 /* ---------list--------- */
 function list() {
 	$.ajax({
 		type: "get",
-		dataType:"json",
+		dataType: "json",
 		url: "listboard.jsp",
 		success: function (data) {
-			
 			alert("총 "+data.length+"개의 게시글이 있습니다.");
 			// 상단 제목 출력
 			var s="<table class='table table-bordered' style='width: 700px;'>";
 			s+="<caption><b>AJAX 게시판</b></caption>";
 			s+="<tr bgcolor='#ccf'>";
 			s+="<th width='50'>번호</th>";
-			s+="<th width='350'>제목</th>";
-			s+="<th width='70'>작성일</th>";
-			s+="<th width='120'>작성자</th>";
+			s+="<th width='320'>제목</th>";
+			s+="<th width='100'>작성자</th>";
+			s+="<th width='120'>작성일</th>";
 			s+="</tr>";
 			
 			// 데이터 출력
@@ -101,24 +229,29 @@ function list() {
 				s+="</td></tr>";
 			} else {
 				// DB에 데이터가 1개 이상 있는 경우
-				$.each(data, function(i, object) {
+				$.each(data, function(i, element) {
 					s+="<tr>";
 					s+="<td align='center'>"+(i+1)+"</td>";
 					s+="<td>";
 					// 제목을 클릭하면 게시글로 이동 >> span 태그가 num을 받음
-					s+="<span num='"+object.num+"' class='detail'>"+object.subject+"</span>";	
+					s+="<span num='"+element.num+"' class='detail'>"+element.subject+"</span>";	
 					s+="</td>";
-					s+="<td>"+object.writer+"</td>";
-					s+="<td>"+object.writeday+"</td>";
+					s+="<td>"+element.writer+"</td>";
+					s+="<td>"+element.writeday+"</td>";
 					s+="</tr>";
 				});
 			}
-			
 			s+="</table>";
 			$("#board").html(s); 
+		},
+		error: function(request, error) {
+			alert("fail!");
+			// error 발생 원인 출력
+			alert("code:"+request.status+"\n"+"error message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 }
+	
 
 </script>
 </head>
@@ -131,7 +264,7 @@ function list() {
 
 <!-- 입력폼 -->
 <div class="writeform">
-	<form action="#">
+	<form action="#" id="frm">
 	<table class="table table-bordered" style="width: 700px;">
 		<caption>게시글 추가</caption>
 		<tr>
@@ -171,6 +304,53 @@ function list() {
 	</table>
 	</form>
 </div>
+
+<!-- 수정폼 -->
+<div class="updateform">
+	<form id="ufrm">
+	<table class="table table-bordered" style="width: 700px;">
+		<caption>게시글 수정</caption>
+		<tr>
+			<th bgcolor="tomato">작성자</th>
+			<td> 
+			<input type="hidden" id="unum" style="width: 200px;" class="form-control input-sm">
+			<input type="text" id="uwriter" style="width: 200px;" class="form-control input-sm">
+			</td>
+		</tr>
+		<tr>
+			<th bgcolor="tomato">제목</th>
+			<td>
+			<input type="text" id="usubject" style="width: 500px;" class="form-control input-sm">
+			</td>
+		</tr>
+		<tr>
+			<td bgcolor="tomato" colspan="2" align="center">
+			<textarea id="ucontent" style="width: 700px; height: 100px; resize: vertical;"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<th bgcolor="tomato">이미지 선택</th>
+			<td>
+			<select id="upfimg">
+				<option value="../image/4.png">기쁨</option>
+				<option value="../image/9.png">행복</option>
+				<option value="../image/7.png">신남</option>
+				<option value="../image/6.png">좌절</option>
+				<option value="../image/1.png">사랑</option>
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+			<button type="button" class="btn btn-warning" id="btnupdate">수정하기</button>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+
+<!--detail  -->
+<div class="detail"></div>
 
 </body>
 </html>

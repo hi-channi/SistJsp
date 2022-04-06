@@ -109,4 +109,50 @@ public class AjaxboardDao {
 		return dto;
 	}
 	
+	// Delete
+	public void deleteBoard(String num) {
+	
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql="delete from ajaxboard where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+	
+			pstmt.setString(1, num);
+			pstmt.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
+	}
+	
+	// Update
+	public void updateBoard(AjaxboardDto dto) {
+		
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql="update ajaxboard set writer=?, subject=?, content=?, pfimg=? where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getWriter());
+			pstmt.setString(2, dto.getSubject());
+			pstmt.setString(3, dto.getContent());
+			pstmt.setString(4, dto.getPfimg());
+			pstmt.setString(5, dto.getNum());
+			
+			pstmt.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
+	}
+	
 }
