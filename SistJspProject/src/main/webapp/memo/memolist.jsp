@@ -1,4 +1,3 @@
-<%@page import="javax.print.attribute.Size2DSyntax"%>
 <%@page import="memo.MemoDto"%>
 <%@page import="org.json.simple.JSONObject"%>
 <%@page import="java.text.SimpleDateFormat"%>
