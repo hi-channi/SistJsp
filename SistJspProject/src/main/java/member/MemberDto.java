@@ -9,7 +9,6 @@ public class MemberDto {
 	private String hp;
 	private Timestamp sdate;
 	
-	
 	public String getNum() {
 		return num;
 	}
@@ -34,5 +33,4 @@ public class MemberDto {
 	public void setSdate(Timestamp sdate) {
 		this.sdate = sdate;
 	}
-	
 }

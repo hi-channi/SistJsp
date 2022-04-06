@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<style type="text/css">
+
+div.list {
+	position: absolute;
+	left: 100px;
+	top: 100px;
+}
+
+div.writeform {
+	position: absolute;
+	left: 900px;
+	top: 100px;
+}
+
+div.list *, div.writeform {
+	font-family: 'Noto Sans KR';
+	font-size: 13pt;
+}
+
+span.detail{
+	cursor: pointer;
+}
+</style>
+
+<script type="text/javascript">
+$(function() {
+	
+	// 게시글 리스트 출력
+	list();
+	
+	// 초기에 입력 폼 숨기기
+	$("div.writeform").hide();
+	
+	// 글쓰기 버튼 클릭 시 입력폼 출력
+	$("#btnwrite").click(function () {
+		$("div.writeform").toggle();
+	});
+	
+	$("#btnadd").click(function () {
+		var writer=$("#writer").val();
+		var subject=$("#subject").val();
+		var content=$("#content").val();
+		var pfimg=$("#pfimg").val();
+		
+		alert(writer);
+		
+		$.ajax({
+			type: "post",
+			dataType: "html",
+			url: "insertboard.jsp",
+			data: {"writer":writer, "subject":subject, "content":content, "pfimg":pfimg},
+			success: function () {
+				// Insert 성공 시 처리
+				$("#writer").val("");
+				$("#subject").val("");
+				$("#content").val("");
+				$("#pfimg").val("");
+				
+				// 게시글 목록 Reload
+				list();
+				
+				// 입력 폼 숨김
+				$("div.writeform").hide();
+			}
+		});
+	});
+});	
+
+/* ---------list--------- */
+function list() {
+	$.ajax({
+		type: "get",
+		dataType:"json",
+		url: "listboard.jsp",
+		success: function (data) {
+			
+			alert("총 "+data.length+"개의 게시글이 있습니다.");
+			// 상단 제목 출력
+			var s="<table class='table table-bordered' style='width: 700px;'>";
+			s+="<caption><b>AJAX 게시판</b></caption>";
+			s+="<tr bgcolor='#ccf'>";
+			s+="<th width='50'>번호</th>";
+			s+="<th width='350'>제목</th>";
+			s+="<th width='70'>작성일</th>";
+			s+="<th width='120'>작성자</th>";
+			s+="</tr>";
+			
+			// 데이터 출력
+			if(data.length==0) {
+				s+="<tr>";
+				s+="<td colspan='4' align='center'>";
+				s+="<b>저장된 글이 없습니다.</b>";
+				s+="</td></tr>";
+			} else {
+				// DB에 데이터가 1개 이상 있는 경우
+				$.each(data, function(i, object) {
+					s+="<tr>";
+					s+="<td align='center'>"+(i+1)+"</td>";
+					s+="<td>";
+					// 제목을 클릭하면 게시글로 이동 >> span 태그가 num을 받음
+					s+="<span num='"+object.num+"' class='detail'>"+object.subject+"</span>";	
+					s+="</td>";
+					s+="<td>"+object.writer+"</td>";
+					s+="<td>"+object.writeday+"</td>";
+					s+="</tr>";
+				});
+			}
+			
+			s+="</table>";
+			$("#board").html(s); 
+		}
+	});
+}
+
+</script>
+</head>
+
+<body>
+<div class="list">
+	<button type="button" class="btn btn-info" id="btnwrite">글쓰기</button>
+	<div id="board">게시글 목록 로딩중...</div>
+</div>
+
+<!-- 입력폼 -->
+<div class="writeform">
+	<form action="#">
+	<table class="table table-bordered" style="width: 700px;">
+		<caption>게시글 추가</caption>
+		<tr>
+			<th bgcolor="#fcc">작성자</th>
+			<td> 
+			<input type="text" id="writer" style="width: 200px;" class="form-control input-sm">
+			</td>
+		</tr>
+		<tr>
+			<th bgcolor="#fcc">제목</th>
+			<td>
+			<input type="text" id="subject" style="width: 500px;" class="form-control input-sm">
+			</td>
+		</tr>
+		<tr>
+			<td bgcolor="#fcc" colspan="2" align="center">
+			<textarea id="content" style="width: 700px; height: 100px; resize: vertical;"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<th bgcolor="#fcc">이미지 선택</th>
+			<td>
+			<select id="pfimg">
+				<option value="../image/4.png">기쁨</option>
+				<option value="../image/9.png">행복</option>
+				<option value="../image/7.png">신남</option>
+				<option value="../image/6.png">좌절</option>
+				<option value="../image/1.png">사랑</option>
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" align="center">
+			<button type="button" class="btn btn-info" id="btnadd">저장하기</button>
+			</td>
+		</tr>
+	</table>
+	</form>
+</div>
+
+</body>
+</html>
