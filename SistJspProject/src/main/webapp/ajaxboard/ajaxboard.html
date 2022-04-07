@@ -22,7 +22,7 @@ div.writeform, div.updateform {
 
 div.list *, div.writeform *, div.detail * {
 	font-family: 'Noto Sans KR';
-	font-size: 13pt;
+	font-size: 11pt;
 }
 
 span.detail{
@@ -86,7 +86,6 @@ $(function() {
 		$("div.writeform").hide();
 		// span 태그에 넣은 num을 가져오기
 		var num=$(this).attr("num");
-		//alert(num);
 		
 		$.ajax({
 			type:"get",
@@ -95,12 +94,12 @@ $(function() {
 			url:"detailboard.jsp",
 			success:function(data){
 				var s="<table class='table table-bordered' style='width:500px;'>";
-				s+="<caption><b>AJAX 게시판 \></b>"+data.subject+"</caption>";
+				s+="<caption><b>AJAX 게시판 \>&nbsp;</b>"+data.subject+"</caption>";
 				s+="<tr bgcolor='orange'>";
 				s+="<td><b style='font-size:2em;'>"+data.subject+"</b>";
 				s+="<span style='float:right; color:gray;'>"+data.writeday+"</span></td></tr>";
 				s+="<tr><td>";
-				s+="<img src='"+data.pfimg+"' width='50' align='left'>&nbsp;";
+				s+="<img alt='' src='"+data.pfimg+"' width='50' align='left'>&nbsp;";
 				s+="<br>"+data.writer+"</td></tr>";
 				s+="<tr height='150'><td><pre>"+data.content+"</pre></td></tr>";
 				// 조작 버튼
@@ -132,7 +131,6 @@ $(function() {
 	$(document).on("click",".btndel",function(){
 		// num값 가져오기
 		var num=$(this).parent().attr("num"); // td(부모태그)에서 num 가져옴
-		alert(num);
 		
 		$.ajax({
 			type:"get",
@@ -150,10 +148,10 @@ $(function() {
 		});
 	});
 	
-	// 수정
+	// 수정할 게시글 수정 폼에 불러오기
 	$(document).on("click",".btnupdate",function(){
 		// 게시글 내용 div 숨기고 리스트 div 보이기
-		$("div.detail").hide();
+		//$("div.detail").hide();
 		
 		var num=$(this).parent().attr("num");
 		
@@ -174,29 +172,28 @@ $(function() {
 		});
 	});
 	
-	$(document).on("click","#btnupdate",function(){
+	// 수정 실행
+	$("#btnupdate").click(function(){
 		// 게시글 내용 div 숨기고 리스트 div 보이기
 		$("div.updateform").hide();
 		$("div.detail").show();
 		
+		/* serialize로 데이터 가져올 때 input 태그에 name 지정하기! */
 		var data=$("#ufrm").serialize();
-		alert(data);
+		
 		$.ajax({
 			type:"post",
 			dataType:"html",
 			url:"updateboard.jsp",
 			data: data,
 			success: function (data){
-				
-				console.log(writer,subject,content,pfimg);
 				$("div.updateform").hide();
 				$("div.detail").hide();
 				$("div.list").show();
 				
 				// 게시글이 성공적으로 DB에 수정됐을 경우 리스트 다시 불러오기
-				alert("수정 성공");
+				alert("수정한 내용이 저장되었습니다.");
 				list();
-				
 			}
 		});
 	});
@@ -265,7 +262,7 @@ function list() {
 <!-- 입력폼 -->
 <div class="writeform">
 	<form action="#" id="frm">
-	<table class="table table-bordered" style="width: 700px;">
+	<table class="table table-bordered" style="width: 600px;">
 		<caption>게시글 추가</caption>
 		<tr>
 			<th bgcolor="#fcc">작성자</th>
@@ -281,13 +278,14 @@ function list() {
 		</tr>
 		<tr>
 			<td bgcolor="#fcc" colspan="2" align="center">
-			<textarea id="content" style="width: 700px; height: 100px; resize: vertical;"></textarea>
+			<textarea id="content" style="width: 600px; height: 100px; resize: vertical;"></textarea>
 			</td>
 		</tr>
 		<tr>
-			<th bgcolor="#fcc">이미지 선택</th>
+			<th bgcolor="#fcc">감정 선택</th>
 			<td>
 			<select id="pfimg">
+				<option value="" selected="selected">선택하세요</option>
 				<option value="../image/4.png">기쁨</option>
 				<option value="../image/9.png">행복</option>
 				<option value="../image/7.png">신남</option>
@@ -307,31 +305,32 @@ function list() {
 
 <!-- 수정폼 -->
 <div class="updateform">
-	<form id="ufrm">
-	<table class="table table-bordered" style="width: 700px;">
+	<form action="#" id="ufrm">
+	<table class="table table-bordered" style="width: 600px;">
 		<caption>게시글 수정</caption>
 		<tr>
 			<th bgcolor="tomato">작성자</th>
 			<td> 
-			<input type="hidden" id="unum" style="width: 200px;" class="form-control input-sm">
-			<input type="text" id="uwriter" style="width: 200px;" class="form-control input-sm">
+			<input type="hidden" id="unum" name="unum" style="width: 200px;" class="form-control input-sm">
+			<input type="text" id="uwriter" name="uwriter" style="width: 200px;" class="form-control input-sm">
 			</td>
 		</tr>
 		<tr>
 			<th bgcolor="tomato">제목</th>
 			<td>
-			<input type="text" id="usubject" style="width: 500px;" class="form-control input-sm">
+			<input type="text" id="usubject" name="usubject" style="width: 500px;" class="form-control input-sm">
 			</td>
 		</tr>
 		<tr>
 			<td bgcolor="tomato" colspan="2" align="center">
-			<textarea id="ucontent" style="width: 700px; height: 100px; resize: vertical;"></textarea>
+			<textarea id="ucontent" name="ucontent" style="width: 600px; height: 100px; resize: vertical;"></textarea>
 			</td>
 		</tr>
 		<tr>
-			<th bgcolor="tomato">이미지 선택</th>
+			<th bgcolor="tomato">감정 선택</th>
 			<td>
-			<select id="upfimg">
+			<select id="upfimg" name="upfimg">
+				<option value="">선택하세요</option>
 				<option value="../image/4.png">기쁨</option>
 				<option value="../image/9.png">행복</option>
 				<option value="../image/7.png">신남</option>
