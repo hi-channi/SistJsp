@@ -20,6 +20,7 @@
 	// 아이디와 암호가 일치하는지 확인
 	LogDao db=new LogDao();
 	boolean flag=db.islogin(id, pw);
+	//boolean flag=db.islogin2(id, pw); 	//  SQL Injection
 	
 	// 일치하면 세션 저장 후 로그인 메인으로 이동
 	if(flag) {
