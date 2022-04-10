@@ -20,7 +20,7 @@ function goFocus(hp) {
 <body>
 
 <form action="insertaction.jsp" method="post" name="frm">
-	<table class="table table=bordered" style="width: 400px;">
+	<table class="table table-bordered" style="width: 400px;">
 		<caption>유저 정보 입력</caption>
 		<tr>
 			<th width="100">이름</th>
