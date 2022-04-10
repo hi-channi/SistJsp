@@ -54,7 +54,7 @@ function goFocus(hp) {
 		<tr>
 			<th>연락처</th>
 			<td>
-			<select name="acode">
+			<select name="acode" required="required">
 				<option value="">선택</option>
 				<option value="010">010</option>
 				<option value="070">070</option>
@@ -69,7 +69,8 @@ function goFocus(hp) {
 			<th>이메일</th>
 			<td>
 			<input type="text" id="email1" name="email1" size="10" required="required">&nbsp;@
-			<select name="email2">
+			<select name="email2" required="required">
+				<option value="">선택하세요</option>
 				<option value="naver.com">naver.com</option>
 				<option value="hanmail.net">hanmail.net</option>
 				<option value="gmail.com">gmail.com</option>

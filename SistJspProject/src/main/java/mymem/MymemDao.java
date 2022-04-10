@@ -59,6 +59,7 @@ public class MymemDao {
 			
 			while(rs.next()) {
 				MymemDto dto=new MymemDto();
+				dto.setNum(rs.getString("num"));
 				dto.setId(rs.getString("id"));
 				dto.setPw(rs.getString("pw"));
 				dto.setName(rs.getString("name"));
@@ -79,15 +80,83 @@ public class MymemDao {
 
 	
 	// num값에 의한 특정 데이터 출력
-	
+	public MymemDto getMem(String num) {
+		MymemDto dto=new MymemDto();
+		
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		String sql="select * from mymem where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, num);
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setNum(rs.getString("num"));
+				dto.setId(rs.getString("id"));
+				dto.setPw(rs.getString("pw"));
+				dto.setName(rs.getString("name"));
+				dto.setHp(rs.getString("hp"));
+				dto.setEmail(rs.getString("email"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+		return dto;
+	}
 	
 	// 데이터 삭제
-	
-	
+	public void deleteMem(String num) {
+
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql="delete from mymem where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, num);
+			pstmt.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
+	}
 	
 	// 데이터 수정
-	
-	
-	
+	public void updateMem(MymemDto dto) {
+		
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		
+		String sql="update mymem set name=?, id=?, pw=?, hp=?, email=? where num=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getId());
+			pstmt.setString(3, dto.getPw());
+			pstmt.setString(4, dto.getHp());
+			pstmt.setString(5, dto.getEmail());
+			pstmt.setString(6, dto.getNum());
+			
+			pstmt.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(pstmt, conn);
+		}
+	}
 	
 }

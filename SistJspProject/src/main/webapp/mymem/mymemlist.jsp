@@ -12,8 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Yeon+Sung&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<title>Insert title here</title>
-
+<title>멤버 리스트</title>
 <style type="text/css">
 
 div.list {
@@ -62,8 +61,8 @@ justify-content: center;
 		<td><%=dto.getEmail() %></td>
 		<td><%=sdf.format(dto.getMday()) %></td>
 		<td>
-			<button class="btn btn-warning btn-xs" onclick="location.href='updateform.jsp'">수정</button>
-			<button class="btn btn-danger btn-xs" onclick="location.href='deleteproc.jsp'">삭제</button>
+			<button type="button" class="btn btn-warning btn-xs" onclick="location.href='updateform.jsp?num=<%=dto.getNum() %>'">수정</button>
+			<button type="button" class="btn btn-danger btn-xs" onclick="location.href='deleteproc.jsp?num=<%=dto.getNum() %>'">삭제</button>
 		</td>
 		</tr>
 	<% }

@@ -15,30 +15,31 @@
 
 <!-- 입력폼을 통해 받은 값을 DB에 전달 -->
 <%
-request.setCharacterEncoding("UTF-8");
-
-String id=request.getParameter("id");
-String pw=request.getParameter("pw");
-String name=request.getParameter("name");
-String hp=request.getParameter("acode")
-		+request.getParameter("hp1")
-		+request.getParameter("hp2");
-String email=request.getParameter("email1")
-			+"@"+request.getParameter("email2");
-
-
-MymemDto dto=new MymemDto();
-
-dto.setId(id);
-dto.setPw(pw);
-dto.setName(name);
-dto.setHp(hp);
-dto.setEmail(email);
-
-MymemDao db=new MymemDao();
-db.insertMem(dto);
-
-response.sendRedirect("mymemlist.jsp");
+	request.setCharacterEncoding("UTF-8");
+	
+	String id=request.getParameter("id");
+	String pw=request.getParameter("pw");
+	String name=request.getParameter("name");
+	String hp=request.getParameter("acode")
+			+"-"+request.getParameter("hp1")
+			+"-"+request.getParameter("hp2");
+	String email=request.getParameter("email1")
+				+"@"+request.getParameter("email2");
+	
+	
+	MymemDto dto=new MymemDto();
+	
+	dto.setId(id);
+	dto.setPw(pw);
+	dto.setName(name);
+	dto.setHp(hp);
+	dto.setEmail(email);
+	
+	MymemDao db=new MymemDao();
+	db.insertMem(dto);
+	
+	response.sendRedirect("mymemlist.jsp");
 %>
+
 </body>
 </html>

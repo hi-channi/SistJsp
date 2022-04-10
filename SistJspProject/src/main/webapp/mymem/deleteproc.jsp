@@ -1,3 +1,4 @@
+<%@page import="mymem.MymemDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -12,6 +13,14 @@
 <body>
 
 <!-- 수정 버튼을 클릭한 회원의 num값을 받아 DB에서 삭제 -->
+<%
+	String num=request.getParameter("num");
+
+	MymemDao dao=new MymemDao();
+	dao.deleteMem(num);
+	
+	response.sendRedirect("mymemlist.jsp");
+%>
 
 </body>
 </html>
