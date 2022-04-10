@@ -16,10 +16,10 @@
 <style type="text/css">
 
 div.list {
-padding-top: 50px;
-font-family: 'Noto Sans KR';
-display: flex;
-justify-content: center;
+	padding-top: 50px;
+	font-family: 'Noto Sans KR';
+	display: flex;
+	justify-content: center;
 }
 
 </style>
@@ -38,7 +38,7 @@ justify-content: center;
 	<caption>멤버 리스트&nbsp;<span class="badge">총 <%=list.size() %>명 </span>&nbsp;
 		<button class="btn btn-success btn-xs glyphicon glyphicon-plus-sign" onclick="location.href='mymemform.jsp'">추가하기</button>
 	</caption>
-	<tr>
+	<tr style="text-align: center;">
 		<th width="50">번호</th>
 		<th width="80">이름</th>
 		<th width="100">아이디</th>
@@ -46,27 +46,35 @@ justify-content: center;
 		<th width="150">연락처</th>
 		<th width="150">이메일</th>
 		<th width="70">가입일</th>
-		<th width="100">관리</th>
+		<th width="100"><span class="glyphicon glyphicon-cog"></span></th>
 	</tr>
 	
-	<% for(int i=0;i<list.size();i++) {
-		MymemDto dto=list.get(i);
-	%>
+	<% if(list.size()==0) {
+		%>
 		<tr>
-		<td><%=i+1 %></td>
-		<td><%=dto.getName() %></td>
-		<td><%=dto.getId() %></td>
-		<td><%=dto.getPw() %></td>
-		<td><%=dto.getHp() %></td>
-		<td><%=dto.getEmail() %></td>
-		<td><%=sdf.format(dto.getMday()) %></td>
-		<td>
-			<button type="button" class="btn btn-warning btn-xs" onclick="location.href='updateform.jsp?num=<%=dto.getNum() %>'">수정</button>
-			<button type="button" class="btn btn-danger btn-xs" onclick="location.href='deleteproc.jsp?num=<%=dto.getNum() %>'">삭제</button>
-		</td>
+			<td colspan="8" align="center">
+			<b>등록된 멤버가 없습니다.</b>
+			</td>
+		</tr>
+	<% } else {
+			for(int i=0;i<list.size();i++) {
+			MymemDto dto=list.get(i);
+		%>
+		<tr>
+			<td><%=i+1 %></td>
+			<td><%=dto.getName() %></td>
+			<td><%=dto.getId() %></td>
+			<td><%=dto.getPw() %></td>
+			<td><%=dto.getHp() %></td>
+			<td><%=dto.getEmail() %></td>
+			<td><%=sdf.format(dto.getMday()) %></td>
+			<td>
+				<button type="button" class="btn btn-warning btn-xs" onclick="location.href='updateform.jsp?num=<%=dto.getNum() %>'">수정</button>
+				<button type="button" class="btn btn-danger btn-xs" onclick="location.href='checkpw.jsp?num=<%=dto.getNum() %>'">삭제</button>
+			</td>
 		</tr>
 	<% }
-	%>
+	}%>
 	
 </table>
 </div>

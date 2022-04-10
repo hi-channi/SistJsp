@@ -11,10 +11,10 @@
 <style type="text/css">
 
 div.insertform {
-padding-top: 50px;
-font-family: 'Noto Sans KR';
-display: flex;
-justify-content: center;
+	padding-top: 50px;
+	font-family: 'Noto Sans KR';
+	display: flex;
+	justify-content: center;
 }
 
 </style>

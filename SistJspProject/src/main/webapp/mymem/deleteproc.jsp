@@ -1,3 +1,4 @@
+<%@page import="mymem.MymemDto"%>
 <%@page import="mymem.MymemDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -15,11 +16,28 @@
 <!-- 수정 버튼을 클릭한 회원의 num값을 받아 DB에서 삭제 -->
 <%
 	String num=request.getParameter("num");
-
-	MymemDao dao=new MymemDao();
-	dao.deleteMem(num);
+	String pw=request.getParameter("pw");
 	
-	response.sendRedirect("mymemlist.jsp");
+	MymemDao dao=new MymemDao();
+	MymemDto dto=dao.getMem(num);
+	
+	// 입력한 암호와 DB의 암호를 대조 >> 일치하면 mymemlist.jsp로 이동, 틀리면 이전 화면으로 이동
+	if(pw.equals(dto.getPw())) {
+		dao.deleteMem(num);
+	%>
+		<script type="text/javascript">
+			alert("삭제 처리 되었습니다.");
+		</script>
+	<%
+		response.sendRedirect("mymemlist.jsp");
+	} else {
+	%> 
+		<script type="text/javascript">
+			alert("비밀번호가 일치하지 않습니다.");
+			history.back();
+		</script>
+	<% 
+	}
 %>
 
 </body>
