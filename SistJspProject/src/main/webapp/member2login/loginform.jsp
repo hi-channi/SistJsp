@@ -9,14 +9,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <title>Insert title here</title>
 <style type="text/css">
-
 div.loginform {
 	padding-top: 50px;
 	font-family: 'Noto Sans KR';
 	display: flex;
 	justify-content: center;
 }
-
 </style>
 </head>
 <body>
@@ -54,7 +52,7 @@ div.loginform {
 			<td colspan="2" align="center">
 			<button type="submit" class="btn btn-info btn-xs" style="width: 150px; height: 30px;">회원로그인</button>
 			&nbsp;&nbsp;&nbsp;
-			<button type="submit" class="btn btn-success btn-xs" style="width: 100px; height: 30px;" onclick="location.href='../member/addform.jsp'">회원가입</button>
+			<button type="button" class="btn btn-success btn-xs" style="width: 100px; height: 30px;" onclick="location.href='../member2/addform.jsp'">회원가입</button>
 			</td>
 		</tr>
 	</table>

@@ -16,7 +16,7 @@
 <body>
 
 <%
-	String realPath=getServletContext().getRealPath("/save");;
+	String realPath=getServletContext().getRealPath("/save");
 
 	int uploadSize=1024*1024*2;
 	MultipartRequest multi=null;
@@ -38,13 +38,13 @@
 			dto.setPhoto("../image/20.png");
 		} else {
 			dto.setPhoto("../save/"+photo);
-			
-			dao.insertMember2(dto);
-			response.sendRedirect("list.jsp");	
-			System.out.println(realPath);
 		}
+		dao.insertMember2(dto);
+		response.sendRedirect("list.jsp");	
+		System.out.println(realPath);
+		
 	} catch(Exception e) {
-		System.out.println("업로드 오류"+e.getMessage());
+		System.out.println("업로드 오류: "+e.getMessage());
 	}
 %>
 

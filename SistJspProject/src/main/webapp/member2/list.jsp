@@ -11,9 +11,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&family=Yeon+Sung&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <title>Insert title here</title>
 <style type="text/css">
-
 div.list {
 	padding-top: 50px;
 	font-family: 'Noto Sans KR';
@@ -27,7 +27,6 @@ div.list {
 	border: 1px solid gray;
 	border-radius: 100px;
 }
-
 </style>
 </head>
 <body>
@@ -87,7 +86,7 @@ div.list {
 					%>
 					<!-- loginmain.jsp에서 이동하기 때문에 상대경로 올바르게 지정 -->
 					<button type="button" class="btn btn-warning btn-sm glyphicon glyphicon-edit" style="width: 50px;" onclick="location.href='../member2/updateform.jsp?num=<%=dto.getNum() %>'"></button>
-					<button type="button" class="btn btn-danger btn-sm glyphicon glyphicon-trash" style="width: 50px;" onclick="location.href='../member2/deletemember.jsp?num=<%=dto.getNum() %>'"></button>
+					<button type="button" class="btn btn-danger btn-sm glyphicon glyphicon-trash" style="width: 50px;" onclick="fundel(<%=dto.getNum() %>)"></button>
 				<% } else {
 				}%> 
 			</td>
@@ -98,5 +97,44 @@ div.list {
 </table>
 </div>
 
+<script type="text/javascript">
+function fundel(num) {
+	alert(num);
+	$("#btnmdel").attr("num",num);
+	$("#member2DelModal").modal();
+}
+</script>
+
+<div class="modal fade" id="member2DelModal" role="dialog">
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">회원 탈퇴</h4>
+			</div>
+			<div class="modal-body">
+				<p>탈퇴하시겠습니까?</p>
+				<button type="button" class="btn btn-danger" id="btnmdel">탈퇴하기</button>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 </body>
+
+<script type="text/javascript">
+$("#btnmdel").click(function() {
+	// num값 읽어오기
+	var num=$(this).attr("num");
+	alert(num);
+	
+	// 삭제 후 이동
+	location.href="../member2/deletemember.jsp?num="+num;
+});
+</script>
+
 </html>

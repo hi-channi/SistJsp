@@ -15,7 +15,7 @@
 <%
 	String id=request.getParameter("id");
 	String pw=request.getParameter("pw");
-	String saveid=request.getParameter("saverid");		// 체크박스 체크 안할 경우 null
+	String saveid=request.getParameter("saveid");		// 체크박스 체크 안할 경우 null
 	
 	Member2Dao dao=new Member2Dao();
 	int idx=dao.getLogin(id, pw);

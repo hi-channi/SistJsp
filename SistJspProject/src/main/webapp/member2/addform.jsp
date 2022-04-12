@@ -33,7 +33,7 @@ function idcheck() {
 			<th>ID</th>
 			<td>
 			<input type="text" class="form-control" name="id" size="15" style="width: 200px; float: left;" readonly="readonly" placeholder="중복체크 클릭">
-			&nbsp;<button type="button" class="btn btn-warning btn-sm" onclick="idcheck()">중복확인</button>
+			&nbsp;<button type="button" class="btn btn-danger btn-sm" onclick="idcheck()">중복확인</button>
 		</tr>
 		<tr>
 			<th>PW</th>
@@ -61,8 +61,8 @@ function idcheck() {
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
-			<input type="submit" class="btn btn-info" value="가입하기">
-			<input type="button" class="btn btn-warning" value="회원 목록 보기" onclick="location.href='list.jsp'">
+			<input type="submit" class="btn btn-info" value="가입하기">&nbsp;&nbsp;
+			<input type="button" class="btn btn-warning" value="뒤로가기" onclick="location.href='../member2login/loginform.jsp'">
 		</tr>
 	</table>
 </form>
