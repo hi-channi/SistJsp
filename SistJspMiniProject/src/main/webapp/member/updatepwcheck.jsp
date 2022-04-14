@@ -1,3 +1,4 @@
+<%@page import="data.dto.MemberDto"%>
 <%@page import="data.dao.MemberDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -12,35 +13,29 @@
 </head>
 <body>
 
+<!-- 수정 버튼을 클릭한 회원의 num값을 받아 DB에서 삭제 -->
 <%
-	String id=request.getParameter("id");
+	String num=request.getParameter("num");
 	String pw=request.getParameter("pw");
-	String saveid=request.getParameter("saveid");		// 체크박스 체크 안할 경우 null
 	
 	MemberDao dao=new MemberDao();
-	int opt=dao.loginCheck(id, pw);
+	boolean check=dao.isPwCheck(num, pw);
 	
-	if(opt==1) {		// 로그인 성공
-		// session 저장
-		session.setAttribute("id", id);
-		session.setAttribute("saveid", saveid==null?"no":"yes");
-		session.setAttribute("loginOk", "yes");
-		
-		session.setMaxInactiveInterval(60*60*8);
-		response.sendRedirect("../index.jsp?main=login/loginmain.jsp");
-	} else if(opt==2) {		// 암호 불일치
-		%> 
+	// 입력한 암호와 DB의 암호를 대조 >> 일치하면 mymemlist.jsp로 이동, 틀리면 이전 화면으로 이동
+	if(check) {
+	%>
 		<script type="text/javascript">
-		alert("비밀번호가 맞지 않습니다.");
-		history.go(-1);
+			location.href="../index.jsp?main=member/memberupdateform.jsp?num=<%=num %>";
 		</script>
-	<% } else if(opt==3) {		// 아이디 없음
-		%>
+	<%
+	} else {
+	%> 
 		<script type="text/javascript">
-		alert("비밀번호가 맞지 않습니다.");
-		history.go(-1);
+			alert("비밀번호가 일치하지 않습니다.");
+			history.back();
 		</script>
-	<% }
+	<% 
+	}
 %>
 
 </body>

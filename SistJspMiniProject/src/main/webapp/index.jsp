@@ -13,7 +13,6 @@ div.layout {
 	border: 1px solid gray;
 	position: absolute;
 }
-
 div.title {
 	width: 100%;
 	height: 100px;

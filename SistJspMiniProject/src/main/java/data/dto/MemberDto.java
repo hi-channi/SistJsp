@@ -3,6 +3,7 @@ package data.dto;
 import java.sql.Date;
 
 public class MemberDto {
+	private String num;
 	private String name;
 	private String id;
 	private String pw;
@@ -11,6 +12,12 @@ public class MemberDto {
 	private String email;
 	private Date sdate;
 	
+	public String getNum() {
+		return num;
+	}
+	public void setNum(String num) {
+		this.num = num;
+	}
 	public String getName() {
 		return name;
 	}

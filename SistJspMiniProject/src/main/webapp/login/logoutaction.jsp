@@ -11,5 +11,11 @@
 </head>
 <body>
 
+<%
+	session.removeAttribute("loginOk");
+
+	response.sendRedirect("index.jsp?main=login/loginform.jsp");
+%>
+
 </body>
 </html>

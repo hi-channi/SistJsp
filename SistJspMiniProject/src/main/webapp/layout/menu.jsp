@@ -47,7 +47,7 @@
 							<li><a href="#">submenu 4-5</a></li>
 						</ul>
 					</li>
-					<li><a href="#">menu 5</a></li>
+					<li><a href="index.jsp?main=login/loginform.jsp" class="glyphicon glyphicon-chevron-right">Login</a></li>
 				</ul>
 			</nav>
 			<div class="clear"></div>

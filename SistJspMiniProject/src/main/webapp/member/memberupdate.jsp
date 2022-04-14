@@ -20,7 +20,6 @@
 	MemberDto dto=new MemberDto();
 	
 	String name=request.getParameter("name");
-	String id=request.getParameter("id");
 	String pw=request.getParameter("pw");
 	String hp=request.getParameter("hp");
 	String addr=request.getParameter("addr1")
@@ -30,17 +29,25 @@
 			+"@"+request.getParameter("email2");
 	
 	dto.setName(name);
-	dto.setId(id);
-	dto.setPw(pw);
 	dto.setHp(hp);
 	dto.setAddr(addr);
 	dto.setEmail(email);
+	dto.setNum(num);
 	
 	MemberDao dao=new MemberDao();
-	dao.insertMember(dto);
 	
-	// regsuccess.jsp로 이동(경로 주의 >> 출력되는 곳에 대한 경로)
-	response.sendRedirect("../index.jsp?main=member/regsuccess.jsp?id="+id);
+	// 암호는 빈칸으로 넘겼을 때(바꾸지 않을 때) 기존 암호로 대치해야 함
+	if(pw==null || pw.equals("")) {
+		String oldpw=dao.getDate(dto.getNum()).getPw();
+		dto.setPw(oldpw);
+	} else {
+		dto.setPw(pw);
+	}
+	
+	dao.updateMember(dto);
+	
+	// memberlist.jsp로 이동(경로 주의 >> 출력되는 곳에 대한 경로)
+	response.sendRedirect("../index.jsp?main=member/memberlist.jsp");
 %>
 
 </body>
