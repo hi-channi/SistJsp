@@ -36,7 +36,7 @@
 							</li>
 						</ul>
 					</li>
-					<li><a href="#">menu 3</a></li>
+					<li><a href="index.jsp?main=guest/guestlist.jsp?currentPage=1">Guestbook</a></li>
 					<li class="parent">
 						<a href="#">menu 4</a>
 						<ul class="sub-menu">

@@ -14,7 +14,7 @@
 <%
 	session.removeAttribute("loginOk");
 
-	response.sendRedirect("index.jsp?main=login/loginform.jsp");
+	response.sendRedirect("../index.jsp?main=login/loginform.jsp");
 %>
 
 </body>
