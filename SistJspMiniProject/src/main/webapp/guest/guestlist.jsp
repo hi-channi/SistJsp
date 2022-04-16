@@ -107,7 +107,7 @@ span.day {
 				%>
 				<!-- 페이징 처리 후에는 반드시 num값 뿐만 아니라 currentPage도 같이 넘겨줄 것 -->
 				&nbsp;<a href="index.jsp?main=guest/guestupdateform.jsp?num=<%=dto.getNum() %>&currentPage=<%=currentPage %>">수정</a>
-				&nbsp;|&nbsp;<a href="">삭제</a>
+				&nbsp;|&nbsp;<a href="index.jsp?main=guest/guestdeleteaction.jsp?num=<%=dto.getNum() %>&currentPage=<%=currentPage %>" onclick="return guestDel()">삭제</a>
 		<% }
 		%>
 		<span class="day"><%=sdf.format(dto.getWriteday()) %></span>	
@@ -134,6 +134,14 @@ span.day {
 <% }
 %>
 </div>
+
+<script type="text/javascript">
+// 삭제 버튼 클릭 시 즉시 href 링크로 이동하지 않고 확인창을 띄움
+function guestDel() {
+	return confirm("삭제하시겠습니까?");
+}
+
+</script>
 
 <!-- 페이징 처리(네비게이션 바) -->
 <div style="width: 500px; text-align: center;" class="container">

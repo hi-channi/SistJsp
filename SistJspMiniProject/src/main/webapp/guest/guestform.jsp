@@ -40,7 +40,7 @@ function readURL(input) {
 
 <div>
 <img id="showimg" style="position: absolute; left: 800px; top: 100px; max-width: 100px;" src="">
-<form action="guest/guestaction.jsp" method="post" enctype="multipart/form-data">
+<form action="guest/guestinsertaction.jsp" method="post" enctype="multipart/form-data">
 	<table class="table table-bordered" style="width: 600px;">
 		<caption><b>방명록 등록</b>
 			<span class="glyphicon glyphicon-camera camera"></span>
