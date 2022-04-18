@@ -24,9 +24,8 @@
 						<ul class="sub-menu">
 							<li><a href="index.jsp?main=member/memberform.jsp"><i class="icon-wrench"></i> 회원가입</a></li>
 							<li><a href="index.jsp?main=member/memberlist.jsp"><i class="icon-credit-card"></i>멤버리스트</a></li>
-							<li><a href="#"><i class="icon-gift"></i>submenu 2-3</a></li>
 							<li>
-								<a class="parent" href="#"><i class="icon-file-alt"></i>submenu 2-4</a>
+								<a class="parent" href="#"><i class="icon-file-alt"></i>(TEST)</a>
 								<ul class="sub-menu">
 									<li><a href="#">submenu 2-3.1</a></li>
 									<li><a href="#">submenu 2-3.2</a></li>
@@ -38,13 +37,10 @@
 					</li>
 					<li><a href="index.jsp?main=guest/guestlist.jsp?currentPage=1">Guestbook</a></li>
 					<li class="parent">
-						<a href="#">menu 4</a>
+						<a href="#">Shop(beta)</a>
 						<ul class="sub-menu">
-							<li><a href="#">submenu 4-1</a></li>
-							<li><a href="#">submenu 4-2</a></li>
-							<li><a href="#">submenu 4-3</a></li>
-							<li><a href="#">submenu 4-4</a></li>
-							<li><a href="#">submenu 4-5</a></li>
+							<li><a href="index.jsp?main=shop/addform.jsp">상품등록</a></li>
+							<li><a href="index.jsp?main=shop/shoplist.jsp">상품목록</a></li>
 						</ul>
 					</li>
 					<li><a href="index.jsp?main=login/loginform.jsp" class="glyphicon glyphicon-chevron-right">Login</a></li>

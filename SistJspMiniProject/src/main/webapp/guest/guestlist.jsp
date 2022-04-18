@@ -1,3 +1,5 @@
+<%@page import="data.dto.AnswerDto"%>
+<%@page import="data.dao.AnswerDao"%>
 <%@page import="data.dto.GuestDto"%>
 <%@page import="data.dao.MemberDao"%>
 <%@page import="java.util.List"%>
@@ -20,6 +22,48 @@ span.day {
 	color: gray;
 }
 </style>
+<script type="text/javascript">
+$(function () {
+	$("span.likes").click(function() {
+		var num=$(this).attr("num");
+		var tag=$(this);
+		
+		$.ajax({
+			type:"get",
+			dataType:"json",
+			url:"guest/ajaxlikecount.jsp",
+			data:{"num":num},
+			success: function (data) {
+				// 텍스트로 변환 >> next()를 다음 태그에 likecnt값을 받음
+				tag.next().text(data.likes);
+				tag.next().next().animate({"font-size": "15px"}, 1000, function () {	// 추천 클릭 시 애니메이션 작동
+				$(this).css("font-size","0px");
+				});
+			}
+		});
+	});
+	/* 댓글창 기본값: 숨기기 >> 클릭 시: 보이기(toggle) */
+	$("div.answer").hide();
+	$("span.answer").click(function() {
+		$(this).parent().find("div.answer").toggle();
+	});
+	
+	/* 댓글 삭제 이벤트 */
+	$("span.del").click(function() {
+		var idx=$(this).attr("idx");
+		
+		$.ajax({
+			type:"get",
+			dataType: "html",
+			data: {"idx":idx},
+			url: "guest/answerdelete.jsp",
+			success: function () {
+				location.reload();
+			}
+		});
+	});
+});
+</script>
 </head>
 
 <%
@@ -122,11 +166,81 @@ span.day {
 		</td>
 	</tr>
 	<!-- 댓글, 추천 -->
+	<%
+		// 각 방명록에 달린 댓글 목록 가져오기
+		AnswerDao adao=new AnswerDao();
+		List<AnswerDto> alist=adao.getAllAnswer(dto.getNum());
+	%>
 	<tr>
 		<td>
-			<span class="answer" style="cursor: pointer;" num=<%=dto.getNum() %>>댓글</span>
+			<span class="answer" style="cursor: pointer;" num=<%=dto.getNum() %>>댓글 <%=alist.size() %> </span>
 			<span class="likes" style="cursor: pointer;" num=<%=dto.getNum() %>>추천</span>
 			<span class="likecnt"><%=dto.getLikecnt() %></span>
+			<span class="glyphicon glyphicon-heart" style="color: red; font-size: 0pt;"></span>
+		<!-- 댓글 작성 폼, 댓글 목록 -->
+		<div class="answer">
+		<%
+			if(loginOk!=null) {
+				%>
+				<div class="answerform">
+					<form action="guest/answerinsert.jsp" method="post">
+						<table>
+							<tr>
+								<td width="480">
+								<input type="hidden" name="num" value="<%=dto.getNum() %>">
+								<input type="hidden" name="myid" value="<%=myid%>">
+								<input type="hidden" name="currentPage" value="<%=currentPage%>">
+								<textarea style="width: 470px; height: 70px;" name="content" required="required" class="form-control"></textarea>
+								</td>
+								<td>
+									<button type="submit" class="btn btn-info" style="width: 70px; height: 70px;">등록</button>
+								</td>
+							</tr>
+						</table>		
+					</form>
+				</div>
+		<% }
+		%>
+		<div class="answerlist">
+			<table>
+			<%
+			for(AnswerDto adto:alist) {
+				%>
+				<tr>
+					<td width="60" align="left">
+						<span class="glyphicon glyphicon-user" style="font-size: 20pt;"></span>
+					</td>
+					<td>
+					<%
+						String aname=mdao.getName(adto.getMyid());
+					%>
+					<br>
+					<b><%=aname %></b>&nbsp;
+					<%
+					// 글 작성자와 댓글 작성자가 같을 경우
+					if(dto.getMyid().equals(adto.getMyid())) {
+						%>
+						<span class="badge">작성자</span>
+					<% }
+					%>
+					<span style="font-size:9pt; color: gray; margin-left: 20px;"><%=sdf.format(adto.getWriteday()) %></span>
+					<%
+					// 댓글 삭제는 로그인 중이면서 로그인한 아이디 = 댓글 작성 아이디일 경우 삭제 아이콘 노출
+					if(loginOk!=null && adto.getMyid().equals(myid)) {
+						%>
+						<span class="glyphicon glyphicon-remove del" idx="<%=adto.getIdx() %>" style="margin-left: 10px;"></span>
+					<% }
+					%>
+					<br>
+					<span style="font-size: 10px;"><%=adto.getContent().replace("\n", "<br>&nbsp;") %></span>
+					</td>
+				</tr>
+			<% } 
+			%>
+			</table>
+		</div>
+		
+		</div>
 		</td>
 	</tr>
 </table>

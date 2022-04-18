@@ -10,7 +10,7 @@
 <title>Insert title here</title>
 <style type="text/css">
 div.layout {
-	border: 1px solid gray;
+	border: 0px solid gray;
 	position: absolute;
 }
 div.title {

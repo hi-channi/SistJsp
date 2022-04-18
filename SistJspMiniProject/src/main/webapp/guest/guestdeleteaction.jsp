@@ -28,15 +28,13 @@
 	} else {
 		// 서버 내 업로드 된 실제 디렉토리 찾기
 		String path=getServletContext().getRealPath("/");
-		System.out.println(path);
 		
-		if(photoname.startsWith("save")) {
-			File file=new File(path+"/"+photoname);
-			file.delete();
-		}
+		File file=new File(path+"/"+photoname);
+		System.out.println(path);
+		file.delete();
+		dao.deleteGuest(num);
 	}
 	response.sendRedirect("../index.jsp?main=guest/guestlist.jsp?currentPage="+currentPage);
-	return false;
 %>
 
 </body>
