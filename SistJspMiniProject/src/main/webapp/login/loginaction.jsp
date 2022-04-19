@@ -37,7 +37,7 @@
 	<% } else if(opt==3) {		// 아이디 없음
 		%>
 		<script type="text/javascript">
-		alert("비밀번호가 맞지 않습니다.");
+		alert("아이디가 존재하지 않습니다.");
 		history.go(-1);
 		</script>
 	<% }

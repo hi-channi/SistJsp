@@ -276,4 +276,31 @@ public class MemberDao {
 		return opt;
 	}
 	
+	// 장바구니(cart)에 담기 위해 member의 num값이 필요 >> 세션에 member의 id값 존재 >> id를 통해 num값을 얻음
+	public String getNum(String id) {
+		String num="";
+		
+		Connection conn=db.getConnection();
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		
+		String sql="select * from member where id=?";
+		
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			pstmt.setString(1, id);
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				num=rs.getString("num");		
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			db.dbClose(rs, pstmt, conn);
+		}
+		return num;
+	}
 }

@@ -10,6 +10,10 @@
 <link rel="stylesheet" type="text/css" href="menu/menu.css">
 
 </head>
+<%
+	String loginOk=(String)session.getAttribute("loginOk");
+	String myid=(String)session.getAttribute("id");
+%>
 <body>
 <div id="wrap">
 	<header>
@@ -39,18 +43,38 @@
 					<li class="parent">
 						<a href="#">Shop(beta)</a>
 						<ul class="sub-menu">
-							<li><a href="index.jsp?main=shop/addform.jsp">상품등록</a></li>
-							<li><a href="index.jsp?main=shop/shoplist.jsp">상품목록</a></li>
+						<%
+							// id가 admin인 멤버만 상품등록 메뉴 노출
+							if(loginOk!=null && myid.equals("admin")) {
+								%>
+								<li><a href="index.jsp?main=shop/addform.jsp">상품등록</a></li>
+								<li><a href="index.jsp?main=shop/shoplist.jsp">상품목록</a></li>
+							<% } else {
+								%>
+								<li><a href="index.jsp?main=shop/shoplist.jsp">상품목록</a></li>
+							<% }
+						%>
 						</ul>
 					</li>
-					<li><a href="index.jsp?main=login/loginform.jsp" class="glyphicon glyphicon-chevron-right">Login</a></li>
+					<%
+						// 로그인 상태일 때는 Logout, 미로그인 상태일 때는 Login 노출
+						if(loginOk==null || loginOk.equals("")) {
+							%>
+							<li><a href="index.jsp?main=login/loginform.jsp" class="glyphicon glyphicon-chevron-right">Login</a>
+						<% } else {
+							%>
+							<li><a href="index.jsp?main=login/logoutaction.jsp" class="glyphicon glyphicon-chevron-left">Logout</a></li>
+						<% }
+					%>
+					</li>
 				</ul>
 			</nav>
 			<div class="clear"></div>
 		</div>
 	</header>	
 </div>    
-</body></html>
+</body>
+</html>
 
 <%-- 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
