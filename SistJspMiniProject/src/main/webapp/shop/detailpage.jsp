@@ -75,7 +75,7 @@ $("#btncart").click(function () {
 	
 	// form 태그의 모든 내용 가져오기
 	var formdata=$("#frm").serialize();
-	alert(formdata);
+	//alert(formdata);
 	
 	// ajax 처리 >> 성공 시 mycart.jsp로 이동
 	$.ajax({

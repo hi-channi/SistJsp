@@ -29,12 +29,12 @@
 							<li><a href="index.jsp?main=member/memberform.jsp"><i class="icon-wrench"></i> 회원가입</a></li>
 							<li><a href="index.jsp?main=member/memberlist.jsp"><i class="icon-credit-card"></i>멤버리스트</a></li>
 							<li>
-								<a class="parent" href="#"><i class="icon-file-alt"></i>(TEST)</a>
+								<a class="parent" href="#"><i class="icon-file-alt"></i>게시판</a>
 								<ul class="sub-menu">
-									<li><a href="#">submenu 2-3.1</a></li>
-									<li><a href="#">submenu 2-3.2</a></li>
-									<li><a href="#">submenu 2-3.3</a></li>
-									<li><a href="#">submenu 2-3.4</a></li>
+									<li><a href="index.jsp?main=board/smartform.jsp">스마트게시판</a></li>
+									<li><a href="index.jsp?main=board/smartlist.jsp">게시글 목록</a></li>
+									<li><a href="#">[준비중]</a></li>
+									<li><a href="#">[준비중]</a></li>
 								</ul>
 							</li>
 						</ul>
